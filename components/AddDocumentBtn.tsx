@@ -14,13 +14,14 @@ const AddDocumentBtn = ({userId, email}: AddDocumentBtnProps) => {
         try {
             const room = await createDocument({userId, email})
             
-            if (room) router.push(`/documents/${room.id}`)
+            if (room) {
+                setLoading(false)
+                router.push(`/documents/${room.id}`)
+            }
         } catch (error) {
             console.error(error)
             // add toast
         }
-
-        setLoading(false)
     }
   return (
     <Button
@@ -30,12 +31,16 @@ const AddDocumentBtn = ({userId, email}: AddDocumentBtnProps) => {
         disabled={loading}
     >
         {loading ? (
-            <Image
-                src={'/assets/icons/loading.svg'}
-                alt='loading'
-                width={24}
-                height={24}
-            />
+            <>
+                <Image
+                    src={'/assets/icons/loader.svg'}
+                    alt='loader'
+                    width={24}
+                    height={24}
+                    className='animate-spin'
+                />
+                <p className='hidden sm:block'>Loading ...</p>
+            </>
         ) : (
             <>
                 <Image
